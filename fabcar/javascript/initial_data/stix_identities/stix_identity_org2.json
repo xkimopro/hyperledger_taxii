@@ -1,0 +1,14 @@
+{
+    "type": "identity",
+    "spec_version": "2.1",
+    "id": "identity--f431f809-377b-45e0-aa1c-6a4751cae5ff",
+    "created_by_ref": "identity--023d105b-752e-4e3c-941c-7d3f3cb15e9e",
+    "created": "2015-04-06T20:03:00.000Z",
+    "modified": "2017-04-06T20:03:00.000Z",
+    "name" : "Organization2" ,
+    "description" : "This is the STIX identity object for Organization 2 ", 
+    "roles" : ["IT" , "Security Operations", "Contractors"],
+    "sectors" : ["technology", "telecommunications" ] ,   
+    "identity_class": "organization" , 
+    "contact_information" : "support@organization2.org"
+}
