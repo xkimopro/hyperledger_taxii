@@ -38,15 +38,15 @@ async function main() {
         const network = await gateway.getNetwork('mychannel');
 
         // Get the contract from the network.
-        const contract = network.getContract('fabcar', 'Bootstrap');
-
+        const contract = network.getContract('fabcar', 'Collection');
         // const contract = network.getContract('fabcar');
 
         // Evaluate the specified transaction.
         // queryCar transaction - requires 1 argument, ex: ('queryCar', 'CAR4')
         // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
-        const result = await contract.evaluateTransaction('queryAllObjects');
-
+        // const result = await contract.evaluateTransaction('queryAllObjects');
+        // Rich Query with Pagination (Only supported if CouchDB is used as state database)
+        const result = await contract.evaluateTransaction('QueryAssetsWithPagination', '{"selector":{"docType":"collection"} }', 2, '');
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
 
         // Disconnect from the gateway.

@@ -132,6 +132,54 @@ class Collection extends Contract {
         return JSON.stringify(stix_identity);
     }
 
+   
+
+	async QueryAssetsWithPagination(ctx, queryString, pageSize, bookmark) {
+
+		const {iterator, metadata} = await ctx.stub.getQueryResultWithPagination(queryString, pageSize, bookmark);
+		const results = await this.GetAllResults(iterator, false);
+
+	
+
+		return JSON.stringify({
+            results,
+            metadata
+        });
+	}
+
+    async GetAllResults(iterator, isHistory) {
+		let allResults = [];
+		let res = await iterator.next();
+		while (!res.done) {
+			if (res.value && res.value.value.toString()) {
+				let jsonRes = {};
+				console.log(res.value.value.toString('utf8'));
+				if (isHistory && isHistory === true) {
+					jsonRes.TxId = res.value.tx_id;
+					jsonRes.Timestamp = res.value.timestamp;
+					try {
+						jsonRes.Value = JSON.parse(res.value.value.toString('utf8'));
+					} catch (err) {
+						console.log(err);
+						jsonRes.Value = res.value.value.toString('utf8');
+					}
+				} else {
+					jsonRes.Key = res.value.key;
+					try {
+						jsonRes.Record = JSON.parse(res.value.value.toString('utf8'));
+					} catch (err) {
+						console.log(err);
+						jsonRes.Record = res.value.value.toString('utf8');
+					}
+				}
+				allResults.push(jsonRes);
+			}
+			res = await iterator.next();
+		}
+		iterator.close();
+		return allResults;
+	}
+
     
 
     // async changeCarOwner(ctx, carNumber, newOwner) {
