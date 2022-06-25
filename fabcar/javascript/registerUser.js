@@ -16,11 +16,11 @@ const makeAttributesMandatory = require('./utils/makeAttributesMandatory');
 async function main() {
     try {
         // load the network configuration
-        const ccpPath = path.resolve(__dirname, '..', '..', 'test-network', 'organizations', 'peerOrganizations', 'org1.example.com', 'connection-org1.json');
+        const ccpPath = path.resolve(__dirname, '..', '..', 'test-network', 'organizations', 'peerOrganizations', 'org3.example.com', 'connection-org3.json');
         const ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
 
         // Create a new CA client for interacting with the CA.
-        const caURL = ccp.certificateAuthorities['ca.org1.example.com'].url;
+        const caURL = ccp.certificateAuthorities['ca.org3.example.com'].url;
         const ca = new FabricCAServices(caURL);
 
         // Create a new file system based wallet for managing identities.
@@ -58,7 +58,7 @@ async function main() {
 
         // Register the user, enroll the user, and import the new identity into the wallet.
         const secret = await ca.register({
-            affiliation: 'org1.department1',
+            // affiliation: 'org1.department1',
             enrollmentID: 'appUser',
             role: 'client',
             attrs: identity_attr
@@ -74,7 +74,7 @@ async function main() {
                 certificate: enrollment.certificate,
                 privateKey: enrollment.key.toBytes(),
             },
-            mspId: 'Org1MSP',
+            mspId: 'Org3MSP',
             type: 'X.509',
         };
         await wallet.put('appUser', x509Identity);

@@ -37,6 +37,13 @@ rm -rf go/wallet/*
 pushd ../test-network
 ./network.sh down
 ./network.sh up createChannel -ca -s couchdb
+
+### Add a third organization (optional)
+cd addOrg3
+./addOrg3.sh up -ca -s couchdb
+cd .. 
+### Add a third organization (optional)
+
 ./network.sh deployCC -ccn fabcar -ccv 1 -cci initLedger -ccl ${CC_SRC_LANGUAGE} -ccp ${CC_SRC_PATH}
 popd
 
