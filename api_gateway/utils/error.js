@@ -2,27 +2,44 @@
 
 
 module.exports = class ErrorResource {
-    constructor(org = 1) {
-        this.org = org;
-        this.peer_org_path = path.resolve(__dirname, '..','..', 'test-network', 'organizations', 'peerOrganizations', `org${this.org}.example.com`);
-        this.cc_config_path = path.resolve(__dirname, '..', '..', 'chaincode', 'HyperledgerTaxii', 'javascript', 'config')
+
+
+    static notAcceptable(error_id) {
+
+        let error = {
+            "title": "Not Acceptable",
+            "description": "The media type provided in the Accept header is invalid",
+            "error_id": error_id,
+            "http_status": 406,
+            "external_details": "https://docs.oasis-open.org/cti/taxii/v2.1/taxii-v2.1.html"
+        }
+        return error
+
     }
 
-    fetchCCP() {
-        const ccp_path = path.resolve(this.peer_org_path, `connection-org${this.org}.json`);
-        const ccp = JSON.parse(fs.readFileSync(ccp_path, 'utf8'));
-        return ccp
+    static unauthorizedUser(error_id) {
+        let error = {
+            "title": "Unauthorized",
+            "description": "The client needs to authenticate",
+            "error_id": error_id,
+            "http_status": 401,
+            "external_details": "https://docs.oasis-open.org/cti/taxii/v2.1/taxii-v2.1.html"
+        }
+        return error
     }
 
-    fetchDiscoveryInformation() {
-        const discovery_information_path = path.resolve(this.cc_config_path, 'discovery_information.json');
-        const discovery_information = require(discovery_information_path)
-        return discovery_information
+    static notFound(error_id, description) {
+        let error = {
+            "title": "Not Found",
+            "description": description,
+            "error_id": error_id,
+            "http_status": 404,
+            "external_details": "https://docs.oasis-open.org/cti/taxii/v2.1/taxii-v2.1.html"
+        }
+        return error
+
     }
-    fetchMappings() {
-        const mappings_path = path.resolve(this.cc_config_path, 'mappings.json');
-        const mappings = require(mappings_path)
-        return mappings
-    }
+
+    
 
 }

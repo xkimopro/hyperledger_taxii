@@ -6,13 +6,14 @@ const FabricCAServices = require('fabric-ca-client');
 const {  Wallets } = require('fabric-network');
 const staticFileReader = require('../utils/staticFileReader');
 const  { makeAttributesMandatory } = require('../utils/functions');
+const { getCouchDBUrl } = require('../utils/auth')
 
 // All static files are served to the different APIs through the staticFileReaderClass by its methods
 const static_files = new staticFileReader(org=1)
 const ccp = static_files.fetchCCP()
 const mappings = static_files.fetchMappings()
 
-const couchdb_url = 'http://admin:adminpw@localhost:5984'
+const couchdb_url = getCouchDBUrl()
 
 router.post('/enroll_admin', async (req, res) => {
     try {
@@ -24,7 +25,7 @@ router.post('/enroll_admin', async (req, res) => {
   
       // Create a new CA client for interacting with the CA.
       const ca_info = ccp.certificateAuthorities[`ca.org${org_id}.example.com`];
-      const msp_id = ccp.organizations[organization].msp_id
+      const msp_id = ccp.organizations[organization].mspid
       const ca_tls_ca_certs = ca_info.tlsCACerts.pem;
       const ca = new FabricCAServices(ca_info.url, { trustedRoots: ca_tls_ca_certs, verify: false }, ca_info.caName);
       const enrollment = await ca.enroll({ enrollmentID, enrollmentSecret });
@@ -35,8 +36,8 @@ router.post('/enroll_admin', async (req, res) => {
           certificate: enrollment.certificate,
           privateKey: enrollment.key.toBytes(),
         },
-        msp_id: msp_id,
-        type: 'X.509',
+        mspId: msp_id,
+        type: 'X.509'
       };
 
       // Send Admin Identity
@@ -67,6 +68,7 @@ router.post('/enroll_admin', async (req, res) => {
       const ca_info = ccp.certificateAuthorities[`ca.org${org_id}.example.com`];
       const ca = new FabricCAServices(ca_info.url);
       const msp_id = ccp.organizations[organization].mspid
+      
   
       // Add the organizations stix identity as an attribute to the Hyperledger User Identity
       const stix_identity = mappings.organizations_to_stix_identities[organization]
@@ -90,12 +92,13 @@ router.post('/enroll_admin', async (req, res) => {
           return;
         }
       }
-  
+      
       // Build a user object for authenticating with the CA    
       const provider = wallet.getProviderRegistry().getProvider(admin_identity.type);
       const admin_user = await provider.getUserContext(admin_identity, 'admin');
+      
       const mandatory_identity_attr = makeAttributesMandatory(register_attrs)
-  
+      
       // // Register the user, enroll the user, and import the new identity into the wallet.
       const secret = await ca.register({
         // affiliation: 'org1.department1',
@@ -104,6 +107,8 @@ router.post('/enroll_admin', async (req, res) => {
         attrs: register_attrs
       }, admin_user);
   
+      
+
       const enrollment = await ca.enroll({
         enrollmentID: enrollment_id,
         enrollmentSecret: secret,

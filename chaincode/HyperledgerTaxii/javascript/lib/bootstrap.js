@@ -45,6 +45,16 @@ class Bootstrap extends Contract {
         return JSON.stringify(allResults);
     }
 
+
+    async fetchAPIRoot(ctx) {
+        const collectionAsBytes = await ctx.stub.getState('api_root_info'); // get the car from chaincode state
+        if (!collectionAsBytes || collectionAsBytes.length === 0) {
+            throw new Error(`${id} does not exist`);
+        }
+        console.log(collectionAsBytes.toString());
+        return collectionAsBytes.toString();
+    }
+
 }
 
 module.exports = Bootstrap;
