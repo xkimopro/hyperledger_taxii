@@ -1,7 +1,0 @@
-[{
-    "title": "Hyperledger Fabric TAXII Server",
-    "description": "This Hyperledger Fabric channel implements a TAXII Threat Intelligence Ledger based on Hyperledger Fabric Transactions instead of HTTP calls",
-    "contact": "hlftaxii@taxii.com",
-    "default": "(There is no HTTP Endpoint to address)",
-    "api_roots": []
-}]

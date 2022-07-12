@@ -22,6 +22,8 @@ async function main() {
         const wallet = await Wallets.newFileSystemWallet(walletPath);
         console.log(`Wallet path: ${walletPath}`);
 
+        
+        
         // Check to see if we've already enrolled the user.
         const identity = await wallet.get('appUser');
         if (!identity) {
@@ -32,22 +34,30 @@ async function main() {
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'appUser', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { identity, discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
 
         // Get the contract from the network.
-        const contract = network.getContract('fabcar', 'Collection');
-        // const contract = network.getContract('fabcar');
+        const contract = network.getContract('HyperledgerTaxii', 'Collection');
+        // const contract = network.getContract('HyperledgerTaxii');
 
         // Evaluate the specified transaction.
         // queryCar transaction - requires 1 argument, ex: ('queryCar', 'CAR4')
         // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
         // const result = await contract.evaluateTransaction('queryAllObjects');
+        const result = await contract.evaluateTransaction('queryAllCollections');
+
         // Rich Query with Pagination (Only supported if CouchDB is used as state database)
-        const result = await contract.evaluateTransaction('QueryAssetsWithPagination', '{"selector":{"docType":"collection"} }', 2, '');
-        console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        // const result = await contract.evaluateTransaction('QueryAssetsWithPagination', '{"selector":{"docType":"collection"} }', 2, '');
+        // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        // const result = await contract.evaluateTransaction('readAllPrivateTaxiiCollections', "472c94ae-3113-4e3e-a4dd-a9f4ac7471d4");
+    
+        
+        // console.log(result)
+        let x = result.toString();
+        console.log(JSON.stringify(JSON.parse(x),null,4));
 
         // Disconnect from the gateway.
         await gateway.disconnect();

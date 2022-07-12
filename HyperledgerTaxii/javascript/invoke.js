@@ -37,7 +37,7 @@ async function main() {
         const network = await gateway.getNetwork('mychannel');
 
         // Get the contract from the network.
-        const contract = network.getContract('fabcar', 'Collection');        
+        const contract = network.getContract('HyperledgerTaxii', 'Collection');        
         const collection = {
             id  : '984fed88-08fa-fdca-b1b1-fb247eb41g54',
             title : 'The Testing Collection One',
@@ -52,7 +52,7 @@ async function main() {
         const {id, title, description, can_read, can_write, media_types} = collection;
 
 
-        await contract.submitTransaction('createCollection', id, title, description, can_read, can_write, media_types);
+        await contract.submitTransaction('createPrivateTaxiiObjectInsideCollection' ,id, "sharedOrg1Org2Collection", title, description, can_read, can_write, media_types);
         console.log('Transaction has been submitted');
 
         // Disconnect from the gateway.
