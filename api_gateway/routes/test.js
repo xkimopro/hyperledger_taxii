@@ -8,15 +8,13 @@ const staticFileReader = require('../utils/staticFileReader');
 const  { makeAttributesMandatory } = require('../utils/functions');
 const { getCouchDBUrl } = require('../utils/auth')
 
-// All static files are served to the different APIs through the staticFileReaderClass by its methods
-const static_files = new staticFileReader(org=1)
-const ccp = static_files.fetchCCP()
-const mappings = static_files.fetchMappings()
+
 
 const couchdb_url = getCouchDBUrl()
 
 router.post('/enroll_admin', async (req, res) => {
     try {
+      const ccp = req.reserved_properties.ccp
       // Fetch parameters from JSON body and from common connection profile
       const org_id = ccp.client.organization.replace('Org', '')
       const enrollmentID = req.body.enrollmentID
@@ -58,6 +56,10 @@ router.post('/enroll_admin', async (req, res) => {
   
   router.post('/register_user/', async (req, res) => {
     try {
+      
+      const ccp = req.reserved_properties.ccp;
+      const mappings = req.reserved_properties.mappings;
+
       // Fetch parameters from JSON body and from common connection profile
       const enrollment_id = req.body.enrollment_id
       const admin_identity = req.body.admin_identity

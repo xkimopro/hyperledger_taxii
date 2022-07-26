@@ -38,22 +38,36 @@ async function main() {
 
         // Get the contract from the network.
         const contract = network.getContract('HyperledgerTaxii', 'Collection');        
-        const collection = {
-            id  : '984fed88-08fa-fdca-b1b1-fb247eb41g54',
-            title : 'The Testing Collection One',
-            description : 'A testing collection for testing purposes',
-            can_read : true,
-            can_write : true,
-            media_types: [
-                "application/stix+json;version=2.0",
-                "application/stix+json;version=2.1"
+        // const collection = {
+        //     id  : '984fed88-08fa-fdca-b1b1-fb247eb41g54',
+        //     title : 'The Testing Collection One',
+        //     description : 'A testing collection for testing purposes',
+        //     media_types: [
+        //         "application/stix+json;version=2.0",
+        //         "application/stix+json;version=2.1"
+        //     ]
+        // };
+        const obj = {
+            "type": "attack-pattern",
+            "spec_version": "2.1",
+            "id": "attack-pattern--274186af-f5c7-4258-a7ca-41845eaaa263",
+            "created": "2021-08-03T13:46:43.858771Z",
+            "modified": "2022-04-19T13:38:52.06482Z",
+            "name": "daughter",
+            "confidence": 18,
+            "lang": "gr",
+            "external_references": [
+                {
+                    "source_name": "short",
+                    "description": "Not Certainly right network while color mind.",
+                    "external_id": "VoGcUG"
+                }
             ]
-        };
-        const {id, title, description, can_read, can_write, media_types} = collection;
-
-
-        await contract.submitTransaction('createPrivateTaxiiObjectInsideCollection' ,id, "sharedOrg1Org2Collection", title, description, can_read, can_write, media_types);
-        console.log('Transaction has been submitted');
+        }
+        // await contract.submitTransaction('createPrivateTaxiiObjectInsideCollection' ,id, "sharedOrg1Org2Collection", title, description, can_read, can_write, media_types);
+        await contract.submitTransaction('createOrUpdatePublicObject' ,'82a7b528-80eb-42ed-a74d-c6fbd5a26155' , obj.id , JSON.stringify(obj));
+        
+        // console.log('Transaction has been submitted');
 
         // Disconnect from the gateway.
         await gateway.disconnect();

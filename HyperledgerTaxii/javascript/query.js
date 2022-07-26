@@ -47,7 +47,7 @@ async function main() {
         // queryCar transaction - requires 1 argument, ex: ('queryCar', 'CAR4')
         // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
         // const result = await contract.evaluateTransaction('queryAllObjects');
-        const result = await contract.evaluateTransaction('queryAllCollections');
+        const result = await contract.evaluateTransaction('readObjectHistory', "attack-pattern--274186af-f5c7-4258-a7ca-41845eaaa263");
 
         // Rich Query with Pagination (Only supported if CouchDB is used as state database)
         // const result = await contract.evaluateTransaction('QueryAssetsWithPagination', '{"selector":{"docType":"collection"} }', 2, '');

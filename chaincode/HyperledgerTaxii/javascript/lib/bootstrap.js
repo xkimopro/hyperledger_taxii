@@ -46,6 +46,27 @@ class Bootstrap extends Contract {
     }
 
 
+    async queryByDocType(ctx, doc_type) {
+        const startKey = '';
+        const endKey = '';
+        const allResults = [];
+        for await (const { key, value } of ctx.stub.getStateByRange(startKey, endKey)) {
+            const strValue = Buffer.from(value).toString('utf8');
+            let record;
+            try {
+                record = JSON.parse(strValue);
+            } catch (err) {
+                console.log(err);
+                record = strValue;
+            }
+            if (record.docType == doc_type) {
+                allResults.push({ Key: key, Record: record });
+            }
+        }
+        console.info(allResults);
+        return JSON.stringify(allResults);
+    }
+
     async fetchAPIRoot(ctx) {
         const collectionAsBytes = await ctx.stub.getState('api_root_info'); // get the car from chaincode state
         if (!collectionAsBytes || collectionAsBytes.length === 0) {

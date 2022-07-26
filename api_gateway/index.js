@@ -12,7 +12,7 @@ const { checkHeaders } = require('./utils/headers')
 const test = require('./routes/test');
 const api_root = require('./routes/api_root')
 
-const static_files = new staticFileReader(org = 1)
+const static_files = new staticFileReader(org = 2)
 const app = new express()
 const port = 3000
 
@@ -21,6 +21,7 @@ app.use((req,res,next) => {
   req.reserved_properties = {}
   req.reserved_properties.request_uuid = uuidv4()
   req.reserved_properties.ccp = static_files.fetchCCP()
+  req.reserved_properties.mappings = static_files.fetchMappings()
   next();
 })
 

@@ -30,6 +30,27 @@ class Collection extends Contract {
         return collectionAsBytes.toString();
     }
 
+    async queryAllCollectionObjects(ctx, collection_id) {
+        const startKey = '';
+        const endKey = '';
+        const allResults = [];
+        for await (const { key, value } of ctx.stub.getStateByRange(startKey, endKey)) {
+            const strValue = Buffer.from(value).toString('utf8');
+            let record;
+            try {
+                record = JSON.parse(strValue);
+            } catch (err) {
+                console.log(err);
+                record = strValue;
+            }
+            if (record.docType == 'collection' && record.collection_id == collection_id) {
+                allResults.push({ Key: key, Record: record });
+            }
+        }
+        console.info(allResults);
+        return JSON.stringify(allResults);
+    }
+
     async queryAllCollections(ctx) {
         const startKey = '';
         const endKey = '';
@@ -64,6 +85,42 @@ class Collection extends Contract {
 
         await ctx.stub.putState(id, Buffer.from(JSON.stringify(collection)));
         console.info('============= END : Create Collection ===========');
+    }
+
+    async processEnvelope(ctx, collection_id, envelope) {
+        const objects = envelope.objects;
+        for (const obj in objects) {
+            await this.createCollection(ctx, collection_id, obj.id, obj)
+        }
+        return
+    }
+
+    async createOrUpdatePublicObject(ctx, collection_id, id, stix_json_str) {
+        console.info('============= START : Creating Public Object ===========');
+        let stix_json = JSON.parse(stix_json_str)
+        stix_json.docType = 'object';
+        stix_json.collection_id = collection_id;
+        await ctx.stub.putState(id, Buffer.from(JSON.stringify(stix_json)));
+        console.info('============= END : Create Public Object ===========');
+    }
+
+    async readObjectHistory(ctx, id) {
+        const promiseOfIterator = await ctx.stub.getHistoryForKey(id);
+        const results = [];
+        while (true) {
+            let res = await promiseOfIterator.next();
+            //In the loop you have to check if the iterator has values or if its done 
+            if (res.value) {
+                results.push(res)
+            }
+            if (res.done) {
+                // close the iterator 
+                await promiseOfIterator.close()
+                // exit the loop
+                return JSON.stringify(results);
+            }
+        }
+
     }
 
 
@@ -105,7 +162,7 @@ class Collection extends Contract {
 
     }
 
-    async createPrivateTaxiiObjectInsideCollection(ctx, collection, id, title, description, media_types) {
+    async createPrivateDataCollectionObject(ctx, collection, id, title, description, media_types) {
         console.info('============= START : Create Collection ===========');
 
         const taxii_collection = {
@@ -124,9 +181,6 @@ class Collection extends Contract {
 
         const { iterator, metadata } = await ctx.stub.getQueryResultWithPagination(queryString, pageSize, bookmark);
         const results = await this.GetAllResults(iterator, false);
-
-
-
         return JSON.stringify({
             results,
             metadata

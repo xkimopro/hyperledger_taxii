@@ -6,15 +6,16 @@ const { fabricAuthentication } = require('../utils/auth')
 const ErrorResource = require('../utils/error')
 const { createConnections } = require('../utils/functions')
 
-const collections = require('./collections')
 
 
 router.use(fabricAuthentication)
 
-// API Root Information
+
+// List objects of collection
 router.get('/', async (req, res) => {
 
     try {
+
         // Create Gateway and Network Connections
         const [gateway, network] = await createConnections(req);
 
@@ -32,26 +33,4 @@ router.get('/', async (req, res) => {
     }
 })
 
-// API Root Information
-router.get('/status/:status_id', async (req, res) => {
-    try {
-        res.send("status endpoint")
-        return "test"
-    }
-    catch (error) {
-        console.log(error)
-        res.status(400).send(error.toString())
-    }
-})
-
-router.use('/collections', collections)
-
-// If no pattern matches on route throw 404 Found
-router.use((req, res, next) => {
-    const description = 'The API Root or Status ID are not found, or the client does not have access to the resource'
-    res.status(404).send(ErrorResource.notFound(req.reserved_properties.request_uuid, description))
-})
-
-
-
-module.exports = router;
+module.exports = router

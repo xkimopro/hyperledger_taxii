@@ -53,23 +53,21 @@ async function main() {
         const adminUser = await provider.getUserContext(adminIdentity, 'admin');
         console.log(adminUser)
 
-        const identity_attr = readIdentity()
-        console.log(identity_attr)
+        // const identity_attr = readIdentity()
+        // console.log(identity_attr)
         
-        const mandatory_identity_attr = makeAttributesMandatory(identity_attr)
-        console.log(mandatory_identity_attr)
+        // const mandatory_identity_attr = makeAttributesMandatory(identity_attr)
+        // console.log(mandatory_identity_attr)
 
         // Register the user, enroll the user, and import the new identity into the wallet.
         const secret = await ca.register({
             // affiliation: 'org1.department1',
             enrollmentID: 'appUser',
-            role: 'client',
-            attrs: identity_attr
+            role: 'client'
         }, adminUser);
         const enrollment = await ca.enroll({
             enrollmentID: 'appUser',
-            enrollmentSecret: secret,
-            attr_reqs: mandatory_identity_attr
+            enrollmentSecret: secret
 
         });
         const x509Identity = {
