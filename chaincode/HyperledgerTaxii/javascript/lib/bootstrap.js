@@ -23,6 +23,7 @@ class Bootstrap extends Contract {
         await data_contract.initializeAPIRootInformation(ctx);
         await data_contract.initializeCollections(ctx);
         await data_contract.initializeCollectionsConfig(ctx);
+        await data_contract.initializeCollectionObjects(ctx);
         return 0;
     }
 

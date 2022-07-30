@@ -1,11 +1,9 @@
-const fs = require('fs');
 const path = require('path');
-const { Gateway } = require('fabric-network')
-const express = require('express');
-const { nextTick } = require('process');
-
+const { Gateway } = require('fabric-network');
+const moment = require('moment')
 
 module.exports = {
+
     makeAttributesMandatory: function makeAttributesMandatory(attrs) {
         let attr_reqs = [];
         for (const index in attrs) {
@@ -52,5 +50,34 @@ module.exports = {
         return org_msp
     },
 
-    
+    validateObject: function validateObject(obj) {
+
+        // Check for common properties
+        let common_properties = ['type', 'spec_version', 'id', 'created', 'modified']
+        for (const common_property of common_properties) {
+            if (obj[common_property] == undefined) {
+                throw new Error(`Common property ${common_property} missing from object. Insertion fails`);
+            }
+        }
+        // Check for TAXII spec version
+        if (obj.spec_version != '2.1')
+            throw new Error(`This TAXII server only supports STIX 2.1`)
+
+
+        // Parse and perform date checks
+        let created = new Date(obj.created);
+        let modified = new Date(obj.modified);
+ 
+
+        if (!moment(created, moment.ISO_8601).isValid() || !moment(created, moment.ISO_8601).isValid())
+            throw new Error('Invalid date formats')
+        
+        if (created > modified)
+            throw new Error('Created after modified')
+        
+        if (obj.current_version && ( obj.current_version.created != obj.created || new Date(obj.current_version.modified) >= modified ) )
+            throw new Error('Problem with timesstamps')
+    },
+
+
 };

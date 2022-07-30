@@ -9,6 +9,7 @@
 const { Gateway, Wallets } = require('fabric-network');
 const fs = require('fs');
 const path = require('path');
+const { v4: uuidv4 } = require('uuid');
 
 async function main() {
     try {
@@ -37,7 +38,7 @@ async function main() {
         const network = await gateway.getNetwork('mychannel');
 
         // Get the contract from the network.
-        const contract = network.getContract('HyperledgerTaxii', 'Collection');        
+        const contract = network.getContract('HyperledgerTaxii', 'Collection');
         // const collection = {
         //     id  : '984fed88-08fa-fdca-b1b1-fb247eb41g54',
         //     title : 'The Testing Collection One',
@@ -47,6 +48,8 @@ async function main() {
         //         "application/stix+json;version=2.1"
         //     ]
         // };
+
+
         const obj = {
             "type": "attack-pattern",
             "spec_version": "2.1",
@@ -64,10 +67,87 @@ async function main() {
                 }
             ]
         }
+
+        const envelope = {
+            "objects": [{
+                "type": "attack-pattern",
+                "spec_version": "2.1",
+                "id": "attack-pattern--274186af-f5c7-4258-a7ca-41845eaaa263",
+                "created": "2021-08-03T13:46:43.858771Z",
+                "modified": "2021-08-03T13:46:43.858771Z",
+                "name": "daughter",
+                "confidence": 18,
+                "lang": "gr",
+                "external_references": [
+                    {
+                        "source_name": "short",
+                        "description": "Not Certainly right network while color mind.",
+                        "external_id": "VoGcUG"
+                    }
+                ]
+            }, {
+                "type": "attack-pattern",
+                "spec_version": "2.1",
+                "id": "attack-pattern--232186af-f5c7-4258-a7ca-41845eaaa263",
+                "created": "2021-08-03T13:46:43.858771Z",
+                "modified": "2021-08-03T13:46:43.858771Z",
+                "name": "daughter22",
+                "confidence": 19,
+                "lang": "gr",
+                "external_references": [
+                    {
+                        "source_name": "short",
+                        "description": "Not Certainly right network while color mind.",
+                        "external_id": "VoGcUG"
+                    }
+                ]
+            }
+                , {
+                "type": "attack-pattern",
+                "spec_version": "2.1",
+                "id": "attack-pattern--251186af-f4c7-4258-a7ca-41845eaaa263",
+                "created": "2022-08-03T13:46:43.858771Z",
+                "modified": "2022-08-03T13:46:43.858771Z",
+                "name": "daughter33",
+                "confidence": 20,
+                "lang": "en",
+                "external_references": [
+                    {
+                        "source_name": "medium",
+                        "description": "Certainly right network while color mind.",
+                        "external_id": "VoGcUG"
+                    }
+                ]
+            }
+            ]
+        }
+
+        const status_id = uuidv4()
+        const pending_count = envelope.objects.length;
+        const initial_status = {
+            id: status_id,
+            status: 'pending',
+            request_timestamp: new Date().toISOString(),
+            total_count: pending_count,
+            success_count: 0,           
+            failure_count: 0,
+            pending_count: pending_count,
+            docType: 'status'
+        }
+
+        // Insert initial status
+        await contract.submitTransaction('processEnvelope', '82a7b528-80eb-42ed-a74d-c6fbd5a26155', JSON.stringify(envelope), JSON.stringify(initial_status));
+
+
         // await contract.submitTransaction('createPrivateTaxiiObjectInsideCollection' ,id, "sharedOrg1Org2Collection", title, description, can_read, can_write, media_types);
-        await contract.submitTransaction('createOrUpdatePublicObject' ,'82a7b528-80eb-42ed-a74d-c6fbd5a26155' , obj.id , JSON.stringify(obj));
-        
-        // console.log('Transaction has been submitted');
+
+
+        // await contract.submitTransaction('createOrUpdateObject', '82a7b528-80eb-42ed-a74d-c6fbd5a26155', obj.id, JSON.stringify(obj), '123');
+
+        await contract.submitTransaction('processEnvelope', '82a7b528-80eb-42ed-a74d-c6fbd5a26155', JSON.stringify(envelope), JSON.stringify(initial_status));
+        let x = result.toString();
+        console.log(JSON.stringify(JSON.parse(x), null, 4));
+       
 
         // Disconnect from the gateway.
         await gateway.disconnect();

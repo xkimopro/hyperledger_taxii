@@ -35,8 +35,15 @@ router.get('/', async (req, res) => {
 // API Root Information
 router.get('/status/:status_id', async (req, res) => {
     try {
-        res.send("status endpoint")
-        return "test"
+        const status_id = req.params.status_id
+        // Create Gateway and Network Connections
+        const [gateway, network] = await createConnections(req);
+        // Get the contract from the network.
+        const contract = network.getContract('HyperledgerTaxii', 'Collection');
+        let status_resource = await contract.evaluateTransaction('queryStatusById', 'status-' + status_id);
+        status_resource = JSON.parse(status_resource.toString());
+        delete status_resource.docType
+        res.send(status_resource);
     }
     catch (error) {
         console.log(error)

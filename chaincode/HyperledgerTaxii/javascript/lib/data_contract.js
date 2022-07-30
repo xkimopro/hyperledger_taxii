@@ -198,16 +198,16 @@ class DataContract extends Contract {
             console.info('Added <--> ', public_data_1[i][i]);
         }
 
-        // Collection 2 ( Private Between Org1 and Org2 )
-        console.info('============= Adding to collection 472c94ae-3113-4e3e-a4dd-a9f4ac7471d4 ===========');
-        let private_data_2_collection_id = '472c94ae-3113-4e3e-a4dd-a9f4ac7471d4';
-        let private_data_2 = [{
+        // Collection 2 ( public Between Org1 and Org2 )
+        console.info('============= Adding to collection 75a7b528-10eb-42ed-b74e-c6fbe5a26143 ===========');
+        let public_data_2_collection_id = '75a7b528-10eb-42ed-b74e-c6fbe5a26143';
+        let public_data_2 = [{
             "type": "incident",
             "spec_version": "2.1",
             "id": "incident--81f2211b-437b-46ff-971c-fccf4c67bafa",
             "created_by_ref": "identity--6fa2c060-a444-49aa-ab4f-263f661fed40",
             "created": "2022-04-19T19:47:51.141791Z",
-            "modified": "2023-02-04T11:49:10.276155Z",
+            "modified": "2022-04-19T19:47:51.141791Z",
             "name": "later",
             "description": "Coach activity beyond music discussion.",
             "confidence": 1
@@ -217,7 +217,7 @@ class DataContract extends Contract {
             "spec_version": "2.1",
             "id": "identity--6fa2c060-a444-49aa-ab4f-263f661fed40",
             "created": "2022-08-06T06:23:15.293046Z",
-            "modified": "2022-08-24T04:15:01.131862Z",
+            "modified": "2022-08-06T06:23:15.293046Z",
             "name": "Mitchell-Miller",
             "roles": [
                 "laugh",
@@ -277,7 +277,7 @@ class DataContract extends Contract {
             "id": "indicator--9d33d346-3fab-4ad0-b07c-2b952710e68f",
             "created_by_ref": "identity--05adffc8-55ea-4f6c-b850-93417bd5bdca",
             "created": "2022-11-21T19:17:23.440224Z",
-            "modified": "2022-12-20T07:18:57.830703Z",
+            "modified": "2022-11-21T19:17:23.440224Z",
             "name": "region",
             "pattern": "([domain-name:value = 'davis.org'] AND ([url:defanged NOT = false])) AND [software:vendor < 'Jackson, Porter and Green']",
             "pattern_type": "stix",
@@ -356,7 +356,7 @@ class DataContract extends Contract {
             "id": "relationship--f8be9356-ed02-44fb-ab1a-1537b40c18d3",
             "created_by_ref": "identity--9d148371-b27c-4f71-aa7a-3de5f89b90a0",
             "created": "2021-12-26T08:14:33.636546Z",
-            "modified": "2022-07-19T05:39:03.642066Z",
+            "modified": "2021-12-26T08:14:33.636546Z",
             "relationship_type": "related-to",
             "source_ref": "indicator--9d33d346-3fab-4ad0-b07c-2b952710e68f",
             "target_ref": "incident--81f2211b-437b-46ff-971c-fccf4c67bafa",
@@ -376,6 +376,7 @@ class DataContract extends Contract {
             "spec_version": "2.1",
             "id": "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9",
             "created": "2017-01-20T00:00:00.000Z",
+            "modified": "2017-01-20T00:00:00.000Z",
             "definition_type": "tlp",
             "name": "TLP:WHITE",
             "definition": {
@@ -387,6 +388,8 @@ class DataContract extends Contract {
             "spec_version": "2.1",
             "id": "marking-definition--e539e3e3-6a5c-4397-b07a-dfb5b73b74eb",
             "created": "2023-06-26T13:43:10.596861Z",
+            "modified": "2023-06-26T13:43:10.596861Z",
+            
             "definition_type": "statement",
             "definition": {
                 "statement": "Country list stay another girl he. Society sometimes positive clearly plan."
@@ -397,6 +400,7 @@ class DataContract extends Contract {
             "spec_version": "2.1",
             "id": "marking-definition--34098fce-860f-48ae-8e50-ebd3cc5e41da",
             "created": "2017-01-20T00:00:00.000Z",
+            "modified": "2017-01-20T00:00:00.000Z",
             "definition_type": "tlp",
             "name": "TLP:GREEN",
             "definition": {
@@ -408,7 +412,7 @@ class DataContract extends Contract {
             "spec_version": "2.1",
             "id": "identity--9d148371-b27c-4f71-aa7a-3de5f89b90a0",
             "created": "2021-10-23T23:38:12.429078Z",
-            "modified": "2022-06-12T09:05:15.981302Z",
+            "modified": "2021-10-23T23:38:12.429078Z",
             "name": "Garza PLC",
             "roles": [
                 "away"
@@ -437,8 +441,9 @@ class DataContract extends Contract {
         {
             "type": "marking-definition",
             "spec_version": "2.1",
-            "id": "marking-definition--5e57c739-391a-4eb3-b6be-7d15ca92d5ed",
+            "id": "marking-definition--5e57c739-391a-4eb3-b6be-7d15ca92d5ed", 
             "created": "2017-01-20T00:00:00.000Z",
+            "modified": "2017-01-20T00:00:00.000Z",
             "definition_type": "tlp",
             "name": "TLP:RED",
             "definition": {
@@ -450,7 +455,7 @@ class DataContract extends Contract {
             "spec_version": "2.1",
             "id": "identity--05adffc8-55ea-4f6c-b850-93417bd5bdca",
             "created": "2022-09-15T20:18:03.027603Z",
-            "modified": "2023-04-02T11:07:11.043247Z",
+            "modified": "2022-09-15T20:18:03.027603Z",
             "name": "Jones and Sons",
             "roles": [
                 "born"
@@ -476,7 +481,7 @@ class DataContract extends Contract {
             "id": "relationship--bed96357-c3b2-40d3-9682-cca1406d0963",
             "created_by_ref": "identity--3060c6c7-8197-4746-8f1d-4413ec349723",
             "created": "2021-10-30T05:06:10.736298Z",
-            "modified": "2022-04-24T15:09:36.455211Z",
+            "modified": "2021-10-30T05:06:10.736298Z",
             "relationship_type": "related-to",
             "source_ref": "identity--9d148371-b27c-4f71-aa7a-3de5f89b90a0",
             "target_ref": "incident--81f2211b-437b-46ff-971c-fccf4c67bafa",
@@ -530,7 +535,7 @@ class DataContract extends Contract {
             "spec_version": "2.1",
             "id": "identity--3060c6c7-8197-4746-8f1d-4413ec349723",
             "created": "2021-05-22T07:29:11.944602Z",
-            "modified": "2022-02-24T17:11:53.06974Z",
+            "modified": "2021-05-22T07:29:11.944602Z",
             "name": "Acosta, Barrett and Stephens",
             "description": "Multi-channeled static protocol",
             "identity_class": "class",
@@ -546,7 +551,7 @@ class DataContract extends Contract {
             "spec_version": "2.1",
             "id": "relationship--8a3cf52d-340f-4628-b942-0259140cb893",
             "created": "2023-03-28T19:42:41.051901Z",
-            "modified": "2023-06-12T04:50:32.002773Z",
+            "modified": "2023-03-28T19:42:41.051901Z",
             "relationship_type": "duplicate-of",
             "source_ref": "identity--6fa2c060-a444-49aa-ab4f-263f661fed40",
             "target_ref": "identity--3060c6c7-8197-4746-8f1d-4413ec349723",
@@ -591,7 +596,7 @@ class DataContract extends Contract {
             "id": "attack-pattern--d32d4297-cd41-44b0-a143-9f53c71f969e",
             "created_by_ref": "identity--07c1a93b-9efa-447e-a1dd-12697fdca67a",
             "created": "2022-04-15T21:08:45.381678Z",
-            "modified": "2022-11-08T16:16:49.990843Z",
+            "modified": "2022-04-15T21:08:45.381678Z",
             "name": "build",
             "description": "Help quickly measure discuss region.",
             "aliases": [
@@ -622,7 +627,7 @@ class DataContract extends Contract {
             "spec_version": "2.1",
             "id": "relationship--53ffbd14-54b1-4291-a670-e01cd327dcea",
             "created": "2022-09-17T11:34:08.551114Z",
-            "modified": "2023-05-04T18:42:13.149655Z",
+            "modified": "2022-09-17T11:34:08.551114Z",
             "relationship_type": "targets",
             "description": "Idea Congress fear mention. Could your fear argue artist just word. Occur black factor that.",
             "source_ref": "attack-pattern--d32d4297-cd41-44b0-a143-9f53c71f969e",
@@ -661,6 +666,8 @@ class DataContract extends Contract {
             "spec_version": "2.1",
             "id": "marking-definition--0f97b514-ddb1-4a13-aa07-297a79936594",
             "created": "2022-12-27T17:05:54.214899Z",
+            "modified": "2022-12-27T17:05:54.214899Z",
+            
             "definition_type": "statement",
             "definition": {
                 "statement": "Pretty already soldier common near in. Foot play friend sport government ground recent defense. About represent room have throughout somebody day."
@@ -671,6 +678,7 @@ class DataContract extends Contract {
             "spec_version": "2.1",
             "id": "marking-definition--44ba8462-6d02-4309-a89d-b0dc9f6bbd5f",
             "created": "2022-05-30T01:42:40.969553Z",
+            "modified": "2022-05-30T01:42:40.969553Z",            
             "definition_type": "statement",
             "name": "throughout",
             "definition": {
@@ -682,7 +690,7 @@ class DataContract extends Contract {
             "spec_version": "2.1",
             "id": "identity--07c1a93b-9efa-447e-a1dd-12697fdca67a",
             "created": "2022-03-10T16:10:50.382011Z",
-            "modified": "2022-04-01T15:31:58.801586Z",
+            "modified": "2022-03-10T16:10:50.382011Z",
             "name": "Collins PLC",
             "labels": [
                 "coach",
@@ -695,7 +703,7 @@ class DataContract extends Contract {
             "spec_version": "2.1",
             "id": "relationship--521b2089-5e4e-4bd9-91d4-310513e74494",
             "created": "2022-06-21T07:09:25.386934Z",
-            "modified": "2023-01-23T05:53:41.345107Z",
+            "modified": "2022-06-21T07:09:25.386934Z",
             "relationship_type": "targets",
             "description": "Write hit ever face. End model apply become group similar.",
             "source_ref": "attack-pattern--d32d4297-cd41-44b0-a143-9f53c71f969e",
@@ -725,10 +733,10 @@ class DataContract extends Contract {
             console.info('Added <--> ', public_data_2[i][i]);
         }
 
-        // Collection 3 ( Private for Org2 only )
-        console.info('============= Adding to collection 64993447-4d7e-4f70-b94d-d7f33742ee63 ===========');
-        let private_data_3_collection_id = '64993447-4d7e-4f70-b94d-d7f33742ee63';
-        let private_data_3 = [
+        // Collection 3 ( public for Org2 only )
+        console.info('============= Adding to collection 82a7b528-80eb-42ed-a74d-c6fbd5a26155 ===========');
+        let public_data_3_collection_id = '82a7b528-80eb-42ed-a74d-c6fbd5a26155';
+        let public_data_3 = [
             
             {
                 "type": "malware",
@@ -745,6 +753,7 @@ class DataContract extends Contract {
             {
                 "type": "malware",
                 "id": "malware--efd5ac80-79ba-45cc-9293-01460ad85303",
+                "spec_version" : "2.1",
                 "created": "2017-07-18T22:00:30.405Z",
                 "modified": "2017-07-18T22:00:30.405Z",
                 "name": "IMDDOS",
@@ -764,8 +773,9 @@ class DataContract extends Contract {
             {
                 "type": "malware",
                 "id": "malware--feda5c80-79ba-45cc-9293-01460ad85404",
-                "created": "2017-07-18T22:00:30.405Z",
-                "modified": "2017-07-18T22:00:30.405Z",
+                "spec_version" : "2.1",
+                "created": "2017-08-18T22:00:30.405Z",
+                "modified": "2017-08-18T22:00:30.405Z",
                 "name": "Fake malware",
                 "labels": [
                   "bot",

@@ -8,6 +8,7 @@
 
 const { Contract } = require('fabric-contract-api');
 
+
 class Collection extends Contract {
 
     constructor() {
@@ -26,8 +27,15 @@ class Collection extends Contract {
         if (!collectionAsBytes || collectionAsBytes.length === 0) {
             throw new Error(`${id} does not exist`);
         }
-        console.log(collectionAsBytes.toString());
         return collectionAsBytes.toString();
+    }
+
+    async queryObjectById(ctx, id) {
+        const objectAsBytes = await ctx.stub.getState(id); // get the car from chaincode state
+        if (!objectAsBytes || objectAsBytes.length === 0) {
+            return null
+        }
+        return objectAsBytes.toString();
     }
 
     async queryAllCollectionObjects(ctx, collection_id) {
@@ -87,21 +95,62 @@ class Collection extends Contract {
         console.info('============= END : Create Collection ===========');
     }
 
-    async processEnvelope(ctx, collection_id, envelope) {
-        const objects = envelope.objects;
-        for (const obj in objects) {
-            await this.createCollection(ctx, collection_id, obj.id, obj)
+
+    async queryStatusById(ctx, id) {
+        const statusAsBytes = await ctx.stub.getState(id); // get the car from chaincode state
+        if (!statusAsBytes || statusAsBytes.length === 0) {
+            return null
         }
-        return
+        let status_str =  statusAsBytes.toString();
+        let status_json = JSON.parse(status_str)
+        if (status_json.docType != 'status') return null
+        return status_str;
     }
 
-    async createOrUpdatePublicObject(ctx, collection_id, id, stix_json_str) {
-        console.info('============= START : Creating Public Object ===========');
+    async creatInitialStatus(ctx, initial_status_str) {
+        const initial_status = JSON.parse(initial_status_str)
+        const status_id = initial_status.id
+        await ctx.stub.putState('status-' + status_id, Buffer.from(JSON.stringify(initial_status)))
+    }
+
+    async createOrUpdateObject(ctx, collection_id, stix_json_str, status_id) {
         let stix_json = JSON.parse(stix_json_str)
         stix_json.docType = 'object';
         stix_json.collection_id = collection_id;
-        await ctx.stub.putState(id, Buffer.from(JSON.stringify(stix_json)));
-        console.info('============= END : Create Public Object ===========');
+        const collection_configAsBytes = await ctx.stub.getState('config-' + collection_id); // get the car from chaincode state
+        if (!collection_configAsBytes || collection_configAsBytes.length === 0) {
+            await ctx.stub.putState(stix_json.id, Buffer.from(JSON.stringify(stix_json)));
+        }
+        else {
+            await ctx.stub.putPrivateData(collection_id, stix_json.id, Buffer.from(JSON.stringify(stix_json)));
+        }
+        await this.updateStatusSuccess(ctx, status_id);
+
+
+    }
+
+    async updateStatusSuccess(ctx, status_id) {
+        const statusAsBytes = await ctx.stub.getState('status-' + status_id); // get the car from chaincode state
+        if (!statusAsBytes || statusAsBytes.length === 0) {
+            throw new Error(`${status_id} does not exist`);
+        }
+        let status = JSON.parse(statusAsBytes.toString());
+        status.success_count += 1;
+        status.pending_count -= 1;
+        if (status.pending_count == 0) status.status = 'completed';
+        await ctx.stub.putState('status-' + status_id, Buffer.from(JSON.stringify(status)));
+    }
+
+    async updateStatusFailure(ctx, status_id) {
+        const statusAsBytes = await ctx.stub.getState('status-' + status_id); // get the car from chaincode state
+        if (!statusAsBytes || statusAsBytes.length === 0) {
+            throw new Error(`${status_id} does not exist`);
+        }
+        let status = JSON.parse(statusAsBytes.toString());
+        status.failure_count += 1;
+        status.pending_count -= 1;
+        if (status.pending_count == 0) status.status = 'completed';
+        await ctx.stub.putState('status-' + status_id, Buffer.from(JSON.stringify(status)));
     }
 
     async readObjectHistory(ctx, id) {

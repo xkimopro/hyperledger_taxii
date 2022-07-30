@@ -41,9 +41,13 @@ app.use(morgan( (tokens, req, res) =>  {
   ].join(' ')
 }))
 
+
+// Route handlers
+app.use('/test', test);
+
+
 // Middleware to check for Accept header
 app.use(checkHeaders)
-
 
 // Top level Discovery information must be above /:api_root because both match the pattern
 app.get('/taxii2', (req, res) => {
@@ -53,8 +57,6 @@ app.get('/taxii2', (req, res) => {
   return;
 })
 
-// Route handlers
-app.use('/test', test);
 app.use('/:api_root', api_root)
 
 

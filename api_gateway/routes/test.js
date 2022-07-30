@@ -7,6 +7,7 @@ const {  Wallets } = require('fabric-network');
 const staticFileReader = require('../utils/staticFileReader');
 const  { makeAttributesMandatory } = require('../utils/functions');
 const { getCouchDBUrl } = require('../utils/auth')
+const { v4: uuidv4 } = require('uuid');
 
 
 
@@ -18,6 +19,7 @@ router.post('/enroll_admin', async (req, res) => {
       // Fetch parameters from JSON body and from common connection profile
       const org_id = ccp.client.organization.replace('Org', '')
       const enrollmentID = req.body.enrollmentID
+      console.log(enrollmentID)
       const enrollmentSecret = req.body.enrollmentSecret
       const organization = `Org${org_id}`
   
@@ -54,7 +56,7 @@ router.post('/enroll_admin', async (req, res) => {
   })
   
   
-  router.post('/register_user/', async (req, res) => {
+  router.post('/register_user', async (req, res) => {
     try {
       
       const ccp = req.reserved_properties.ccp;
